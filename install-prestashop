@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+echo "-- Start installing --"
+
+# Install PrestaShop.
+php $INSTALL_DIR/install-dev/index_cli.php --domain=$DOMAIN --db_server=$MYSQL_HOST --db_user=$MYSQL_USER --db_password=$MYSQL_PASSWORD --db_name=$MYSQL_DATABASE --language=$LANGUAGE --timezone=$TIMEZONE  --db_clear=$MYSQL_CLEAR --db_create=$MYSQL_CREATE --prefix=$MYSQL_PREFIX --engine=$MYSQL_ENGINE --name=$NAME --activity=$ACTIVITY --country=$COUNTRY --firstname=$ADMIN_FIRSTNAME --lastname=$ADMIN_LASTNAME --password=$ADMIN_PASSWORD  --email=$ADMIN_EMAIL --license=$LICENSE --newsletter=$NEWSLETTER --send_email=$send_email
+
+echo "-- Remove install directory --"
+# Remove install directory
+rm -rf $INSTALL_DIR/install-dev
+
+echo "-- Install becopay modual --"
+# Install becopay module
+php $INSTALL_DIR/bin/console prestashop:module install becopay
+
+echo "-- Change files owner --"
+# Change owner files
+chown -R www-data:www-data $INSTALL_DIR
+
+echo "-- Finish installing --"
